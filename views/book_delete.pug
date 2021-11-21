@@ -1,7 +1,7 @@
 extends layout 
 
 block content 
-  h1 #{title} #{book.title} 
+  h1 #{title}: #{book.title} 
   p #{book.author.name}
 
   if book_instances.length 
