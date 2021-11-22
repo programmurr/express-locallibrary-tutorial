@@ -17,19 +17,6 @@ AuthorSchema
     return this.family_name + ', ' + this.first_name;
   });
 
-  // Virtual for author's lifespan
-AuthorSchema.virtual('lifespan').get(function() {
-  var lifetime_string = '';
-  if (this.date_of_birth) {
-    lifetime_string = DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED);
-  }
-  lifetime_string += ' - ';
-  if (this.date_of_death) {
-    lifetime_string += DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED);
-  }
-  return lifetime_string;
-});
-
 // Virtual for author's URL
 AuthorSchema
   .virtual('url')
@@ -44,9 +31,21 @@ AuthorSchema
   });
 
 AuthorSchema
+  .virtual('DOB_ISO')
+  .get(function() {
+    return this.date_of_birth ? DateTime.fromJSDate(this.date_of_birth).toISODate() : "";
+  });
+
+AuthorSchema
   .virtual('DOD_formatted')
   .get(function() {
     return this.date_of_death ? DateTime.fromJSDate(this.date_of_death).setLocale('en-US').toLocaleString(DateTime.DATE_MED) : "";
+  });
+
+AuthorSchema
+  .virtual('DOD_ISO')
+  .get(function() {
+    return this.date_of_death ? DateTime.fromJSDate(this.date_of_death).toISODate() : "";
   });
 
 AuthorSchema
@@ -60,4 +59,3 @@ AuthorSchema
 
   // Export model
   module.exports = mongoose.model('Author', AuthorSchema);
-

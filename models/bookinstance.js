@@ -17,11 +17,18 @@ BookInstanceSchema
     return '/catalog/bookinstance/' + this._id;
   });
 
+BookInstanceSchema
+  .virtual('due_back_formatted')
+  .get(function() {
+    return DateTime.fromJSDate(this.due_back).setLocale('en-US').toLocaleString(DateTime.DATE_MED);
+  });
+
   BookInstanceSchema
-    .virtual('due_back_formatted')
+    .virtual('due_back_ISO')
     .get(function() {
-      return DateTime.fromJSDate(this.due_back).setLocale('en-US').toLocaleString(DateTime.DATE_MED);
+      return DateTime.fromJSDate(this.due_back).toISODate();
     });
+  
   
   module.exports = mongoose.model('BookInstance', BookInstanceSchema);
 
